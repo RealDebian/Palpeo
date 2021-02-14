@@ -1,0 +1,105 @@
+import requests
+import re
+import json
+from bs4 import BeautifulSoup
+
+HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+        'Accept-Encoding': 'none',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Connection': 'keep-alive'}
+
+def link_filter(link):
+    domain = None
+    if link[:11] == 'http://www.' or link[:12] == 'https://www.':
+        domain = link
+        # if link[7:11] == 'www.':
+        #     return link
+        # else:
+        #     return link[:7] + 'w\ww.' + link[7:]
+    # elif link[:8] == 'https://':
+    #     if link[8:12] == 'www.':
+    #         return link
+
+    #     else:
+    #         return link[:8] + 'www.' + link[8:]
+    elif link[:4] == 'www.':
+        domain = 'https://' + link
+    # else:
+    #     domain = 'https://www.' + link
+        return domain
+
+print(link_filter("httpss://google.com"))
+
+def domain_enumeration(domain):
+
+    link = link_filter(domain)
+
+    try:
+        requests_call = requests.get(link, headers=HEADERS)
+
+        html_object = requests_call.content.__str__()
+
+        data = re.findall(r'(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?', html_object)
+
+        domains_data = {}
+        for url_data in data:
+            protocol = url_data[0]
+            domain = url_data[1]
+            route = url_data[2]
+
+            if domain not in domains_data:
+                if route == '/':
+                    domains_data[domain]={'protocol':protocol, 'route':[]}
+                else:
+                    domains_data[domain] = {'protocol': protocol, 'route': [route,]}
+            else:
+                if route == '/':
+                    continue
+                else:
+                    if route in domains_data[domain]['route']:
+                        continue
+                    else:
+                        domains_data[domain]['route'].append(route)
+
+        with open('domains_data','a') as file:
+            file.write(str(domains_data) + '\n')
+            file.close()
+        print('Cool')
+    except requests.exceptions.ConnectionError as err:
+        e = err.__str__()
+        if e[:18] == 'HTTPConnectionPool' or e[:19] == 'HTTPSConnectionPool':
+            print('Failed to establish a new connection, domain not available!')
+        elif e[2:20] == 'Connection aborted':
+            print('An existing connection has been forced to break by the remote host')
+        else:
+            print(e)
+
+# domain_enumeration('funarte.org.ni')
+# http://www.dgi.gob.ni ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
+
+# a = domain_enumeration('sinsa.com.ni')
+# a = {'gmpg.org': {'protocol': 'https', 'route': ['/xfn/11']}, 'yoast.com': {'protocol': 'https', 'route': ['/wordpress/plugins/seo/']}, 'socialhelpcommunity.org': {'protocol': 'http', 'route': ['/#website', '/?s=', '/#webpage', '/feed/', '/comments/feed/', '/wp-includes/css/dist/block-library/style.min.css?ver=5.4.2', '/wp-includes/css/dist/block-library/theme.min.css?ver=5.4.2', '/wp-content/plugins/revslider/public/assets/css/rs6.css?ver=6.2.15', '/wp-content/uploads/smile_fonts/icomoon-brankic-32x32/icomoon-brankic-32x32.css?ver=5.4.2', '/wp-content/uploads/smile_fonts/icomoon-free-social-contact-16x16/icomoon-free-social-contact-16x16.css?ver=5.4.2', '/wp-content/plugins/js_composer/assets/css/js_composer.min.css?ver=6.2.0', '/wp-content/themes/dt-the7/css/main.min.css?ver=9.1.0', '/wp-content/themes/dt-the7/fonts/icomoon-the7-font/icomoon-the7-font.min.css?ver=9.1.0', '/wp-content/themes/dt-the7/fonts/FontAwesome/css/all.min.css?ver=9.1.0', '/wp-content/themes/dt-the7/fonts/FontAwesome/back-compat.min.css?ver=9.1.0', '/wp-content/plugins/dt-the7-core/assets/css/post-type.min.css?ver=2.5.0.1', '/wp-content/uploads/the7-css/custom.css?ver=6b3f8f08bd6d', '/wp-content/uploads/the7-css/media.css?ver=6b3f8f08bd6d', '/wp-content/uploads/the7-css/mega-menu.css?ver=6b3f8f08bd6d', '/wp-content/uploads/the7-css/the7-elements-albums-portfolio.css?ver=6b3f8f08bd6d', '/wp-content/uploads/the7-css/post-type-dynamic.css?ver=6b3f8f08bd6d', '/wp-content/themes/dt-the7/style.css?ver=9.1.0', '/wp-content/themes/dt-the7/css/compatibility/elementor/elementor-global.min.css?ver=9.1.0', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/style.min.css?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/slick.min.css?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/css/icons.css?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/animate.min.css?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/fancytext.min.css?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/headings.min.css?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/content-box.min.css?ver=3.19.5', '/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp', '/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1', '/wp-content/plugins/revslider/public/assets/js/rbtools.min.js?ver=6.2.15', '/wp-content/plugins/revslider/public/assets/js/rs6.min.js?ver=6.2.15', '/wp-content/themes/dt-the7/js/above-the-fold.min.js?ver=9.1.0', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/ultimate-params.min.js?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/headings.min.js?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/slick.min.js?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/jquery-appear.min.js?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/slick-custom.min.js?ver=3.19.5', '/wp-json/', '/xmlrpc.php?rsd', '/wp-includes/wlwmanifest.xml', '/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fsocialhelpcommunity.org%2F', '/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fsocialhelpcommunity.org%2F&#038', '/wp-content/uploads/2020/07/Social-Help-Community-Logo.png', '/wp-content/themes/dt-the7/images/logo-main-dummy-hd.png', '/social-help-community/', '/blog/', '/contacto/', '/contacto', '/wp-content/uploads/2020/07/zoomm.png', '/home/zoomm/', '/wp-content/uploads/2020/07/zoom2.png', '/home/zoom2/', '/poverty-marks-a-gene-predicting-depression/', '/wp-content/uploads/2016/05/covid-19-Y-SALUD-MENTAL-300x210.png', '/wp-content/uploads/2016/05/covid-19-Y-SALUD-MENTAL-600x420.png', '/category/ansiedad/', '/category/covid-19/', '/category/violencia/', '/author/AlexBe/', '/2016/05/08/', '/fobias-que-son-y-como-afectan-el-desarrollo-infantil/', '/wp-content/uploads/2016/06/fobia-infantil-social-help-300x210.png', '/wp-content/uploads/2016/06/fobia-infantil-social-help-600x420.png', '/category/uncategorized/', '/2016/06/09/', '/ansiedad-en-ninos-que-es-y-como-tratarla/', '/wp-content/uploads/2016/06/ansiedad-infantil-social-help-300x210.png', '/wp-content/uploads/2016/06/ansiedad-infantil-social-help-600x420.png', '/wp-content/uploads/2020/07/image4528-225x300.png', '/wp-content/uploads/2020/07/image4528-768x1024.png', '/wp-content/uploads/2020/07/image4528.png', '/home/image4528/', '/wp-content/uploads/2020/07/04093fb4-b2a7-4288-a681-3bb1ead278f1-225x300.jpeg', '/wp-content/uploads/2020/07/04093fb4-b2a7-4288-a681-3bb1ead278f1-768x1024.jpeg', '/wp-content/uploads/2020/07/04093fb4-b2a7-4288-a681-3bb1ead278f1.jpeg', '/home/04093fb4-b2a7-4288-a681-3bb1ead278f1/', '/wp-content/uploads/2020/07/0a17549a-fc4f-4191-9244-cde0103a236c-225x300.jpeg', '/wp-content/uploads/2020/07/0a17549a-fc4f-4191-9244-cde0103a236c-768x1024.jpeg', '/wp-content/uploads/2020/07/0a17549a-fc4f-4191-9244-cde0103a236c.jpeg', '/home/0a17549a-fc4f-4191-9244-cde0103a236c/', '/wp-content/uploads/2020/07/Social-Help-Community-Logo-white.png', '/wp-content/plugins/revslider/public/assets/fonts/font-awesome/css/font-awesome.css', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-css/background-style.min.css?ver=3.19.5', '/wp-content/plugins/wpforms-lite/assets/css/wpforms-full.css?ver=1.6.1', '/wp-content/themes/dt-the7/js/main.min.js?ver=9.1.0', '/wp-content/plugins/dt-the7-core/assets/js/post-type.min.js?ver=2.5.0.1', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/content-box.min.js?ver=3.19.5', '/wp-includes/js/wp-embed.min.js?ver=5.4.2', '/wp-content/plugins/js_composer/assets/js/dist/js_composer_front.min.js?ver=6.2.0', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/easy-ticker.min.js?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/ultimate_bg.min.js?ver=3.19.5', '/wp-content/plugins/Ultimate_VC_Addons/assets/min-js/custom.min.js?ver=3.19.5', '/wp-content/plugins/wpforms-lite/assets/js/jquery.validate.min.js?ver=1.19.0', '/wp-content/plugins/wpforms-lite/assets/js/mailcheck.min.js?ver=1.1.2', '/wp-content/plugins/wpforms-lite/assets/js/wpforms.js?ver=1.6.1']}, 'schema.org': {'protocol': 'https', 'route': ['']}, 'fonts.googleapis.com': {'protocol': 'https', 'route': ['/css?family=Open+Sans:400,600,700', '/css?family=Montserrat:regular,300&#038', '/css?family=Ubuntu:700%2C400%7CComfortaa:400%2C600%7CMontserrat:400%2C700%7CRoboto:700%2C400']}, 'w3.org': {'protocol': 'http', 'route': ['/2000/svg']}, 'api.w.org': {'protocol': 'https', 'route': []}, 'facebook.com': {'protocol': 'https', 'route': ['/SocialHelpCommunity']}, 'twitter.com': {'protocol': 'https', 'route': ['/WeAreSocialHelp']}, 'wa.me': {'protocol': 'https', 'route': ['/50558725356']}, 'paypal.me': {'protocol': 'https', 'route': ['/virtualinvestment']}}
+#
+# for i in a:
+#     print(i,a[i])
+#
+# #
+# networks = {'facebook.com':'', 'twitter.com':'','paypal.me':'', 'wa.me':''}
+# wordpress_natives = ''
+
+# for domain in a:
+#     print(domain,a[domain])
+#     if domain in networks.keys():
+#         networks[domain]=a[domain]['route'][0].strip('/')
+# print(networks)
+
+# soup = BeautifulSoup(html_object, 'html.parser').prettify().__str__()
+# with open('url4' + '.html','w') as file:
+#     file.write(soup)
+#     file.close()
+# print(soup)
+
+# for link in soup.find_all('a'):
+#     print(link.get('href'))
