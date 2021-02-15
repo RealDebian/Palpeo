@@ -1,7 +1,13 @@
 import requests
 import re
+from time import sleep
 import json
 from bs4 import BeautifulSoup
+import colorama
+
+good = colorama.Fore.GREEN + '[*]' + colorama.Fore.RESET
+bad = colorama.Fore.RED + '[!]' + colorama.Fore.RESET
+
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -10,73 +16,74 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KH
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'}
 
-def link_filter(link):
-    domain = None
-    if link[:11] == 'http://www.' or link[:12] == 'https://www.':
-        domain = link
-        # if link[7:11] == 'www.':
-        #     return link
-        # else:
-        #     return link[:7] + 'w\ww.' + link[7:]
-    # elif link[:8] == 'https://':
-    #     if link[8:12] == 'www.':
-    #         return link
 
-    #     else:
-    #         return link[:8] + 'www.' + link[8:]
-    elif link[:4] == 'www.':
-        domain = 'https://' + link
-    # else:
-    #     domain = 'https://www.' + link
-        return domain
-
-print(link_filter("httpss://google.com"))
 
 def domain_enumeration(domain):
 
-    link = link_filter(domain)
-
     try:
-        requests_call = requests.get(link, headers=HEADERS)
-
+        print(good, 'Requesting domain...')
+        sleep(1)
+        
+        requests_call = requests.get('https://' + domain, headers=HEADERS)
         html_object = requests_call.content.__str__()
+
+        print(good, 'Domain extraction...')
+        sleep(1)
 
         data = re.findall(r'(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?', html_object)
 
-        domains_data = {}
+        malicious_string = ['xxx', 'porn', 'sex']
+        print(good, 'Domain enumeration...')
+        sleep(1)
+
+        positive = []
+        
         for url_data in data:
             protocol = url_data[0]
             domain = url_data[1]
             route = url_data[2]
-
-            if domain not in domains_data:
-                if route == '/':
-                    domains_data[domain]={'protocol':protocol, 'route':[]}
+            for string in malicious_string:
+                if string in domain:
+                    positive.append(domain + route)
                 else:
-                    domains_data[domain] = {'protocol': protocol, 'route': [route,]}
-            else:
-                if route == '/':
-                    continue
-                else:
-                    if route in domains_data[domain]['route']:
-                        continue
-                    else:
-                        domains_data[domain]['route'].append(route)
+                    pass
 
-        with open('domains_data','a') as file:
-            file.write(str(domains_data) + '\n')
-            file.close()
-        print('Cool')
-    except requests.exceptions.ConnectionError as err:
+        print(positive)
+
+        # print(protocol, domain, route)
+        #  if domain not in domains_data:
+        #   if route == '/':
+        #        domains_data[domain]={'protocol':protocol, 'route':[]}
+        #     else:
+        #          domains_data[domain] = {'protocol': protocol, 'route': [route,]}
+        #   else:
+        # if route == '/':
+        #      continue
+        #   else:
+        #        if route in domains_data[domain]['route']:
+        #             continue
+        #          else:
+        #               domains_data[domain]['route'].append(route)
+        print(good, 'Saving on database')
+        #with open(domain,'a') as file:
+        #  file.write(str(domains_data) + '\n')
+        #   file.close()
+        #print(good, 'done!')
+    except (requests.exceptions.ConnectionError, requests.exceptions.MissingSchema) as err:
         e = err.__str__()
         if e[:18] == 'HTTPConnectionPool' or e[:19] == 'HTTPSConnectionPool':
-            print('Failed to establish a new connection, domain not available!')
+            print(bad, 'Failed to establish a new connection, domain not available!')
         elif e[2:20] == 'Connection aborted':
-            print('An existing connection has been forced to break by the remote host')
+            print(bad, 'An existing connection has been forced to break by the remote host')
         else:
-            print(e)
+            print(bad, e)
+    except KeyboardInterrupt:
+        print()
+        print('Palpe0 Stopped...')
 
-# domain_enumeration('funarte.org.ni')
+
+domain_enumeration('funarte.org.ni')
+
 # http://www.dgi.gob.ni ('Connection aborted.', ConnectionResetError(10054, 'Se ha forzado la interrupción de una conexión existente por el host remoto', None, 10054, None))
 
 # a = domain_enumeration('sinsa.com.ni')
