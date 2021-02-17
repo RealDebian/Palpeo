@@ -2,12 +2,12 @@ import requests
 import re
 from time import sleep
 import json
+import dbf
 from bs4 import BeautifulSoup
 import colorama
-from Test import html_obj
+
 good = colorama.Fore.GREEN + '[*]' + colorama.Fore.RESET
 bad = colorama.Fore.RED + '[!]' + colorama.Fore.RESET
-
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -16,34 +16,29 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KH
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'}
 
-
-
-def domain_enumeration(domain):
+def domain_enumeration(target_host):
 
     try:
-        print(good, 'Requesting domain...')
+        print(good, 'Requesting domain {}'.format(target_host))
         sleep(.5)
 
-        #requests_call = requests.get('https://' + domain, headers=HEADERS)
-        #html_object = requests_call.content.__str__()
-        html_object = html_obj.__str__()
-        print(good, 'Domain extraction...')
+        requests_call = requests.get(target_host, headers=HEADERS)
+        html_object = requests_call.content.__str__()
+
+        print(good, 'Domains extraction start...')
         sleep(.5)
 
         data = re.findall(r'(http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?', html_object)
 
-        malicious_string = ['xxx', 'porn', 'sex', 'xnxx', 'xvideo']
-        print(good, 'Domain enumeration...')
+        malicious_string = ['xxx', 'porn', 'sex', 'xnxx', 'xvideo', '.firebaseio.com']
+        print(good, 'Domain filtering...')
         sleep(.5)
 
-        print('Domain List:')
-        sleep(1)
         positive_domains = []
         non_positive_domains = []
 
         for url_data in data:
             trigger = None
-
             protocol = url_data[0]
             domain = url_data[1]
             route = url_data[2]
@@ -69,33 +64,27 @@ def domain_enumeration(domain):
                     print(good, domain + route)
                     sleep(.3)
 
+        json_data = {
+            target_host : {
+                'positive_domains': positive_domains,
+                'non_positive_domains': non_positive_domains
+                }
+            }
+
+        #   Data Base Function
+        dbf.write_database(json_data)
+        print('Data Base saved!')
+
+        sleep(1)
         if len(positive_domains) > 0:
             print("""
             Palpe0 found {} positive domains
             Palpe0 found {} non positive domains
             """.format(len(positive_domains), len(non_positive_domains)))
+        else:
+            print('All domains checked, {} domains non positive'.format(len(non_positive_domains)))
 
-
-
-        # print(protocol, domain, route)
-        #  if domain not in domains_data:
-        #   if route == '/':
-        #        domains_data[domain]={'protocol':protocol, 'route':[]}
-        #     else:
-        #          domains_data[domain] = {'protocol': protocol, 'route': [route,]}
-        #   else:
-        # if route == '/':
-        #      continue
-        #   else:
-        #        if route in domains_data[domain]['route']:
-        #             continue
-        #          else:
-        #               domains_data[domain]['route'].append(route)
-        print(good, 'Saving on database')
-        #with open(domain,'a') as file:
-        #  file.write(str(domains_data) + '\n')
-        #   file.close()
-        #print(good, 'done!')
+        print(good, 'done!')
     except (requests.exceptions.ConnectionError, requests.exceptions.MissingSchema) as err:
         e = err.__str__()
         if e[:18] == 'HTTPConnectionPool' or e[:19] == 'HTTPSConnectionPool':
