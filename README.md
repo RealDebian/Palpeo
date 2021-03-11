@@ -31,7 +31,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Palpeo is a website scraper that aims to extract all the links from the source code of a page, analyze them and display them according to their nature, malicious or benign,Palpeo is written in Python3, using regular expressions to find all links on a web page.
+Palpeo is a website scraper that aims to extract all the links from the source code of a page, analyze them and display them according to their nature, malicious or benign, Palpeo is written in Python3, using regular expressions to find all links on a web page.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -81,6 +81,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Oscar Perez - [@RealDebian](https://twitter.com/RealDebian) - oscar_perez@windowslive.com
 
 Project Link: [https://github.com/RealDebian/Palpeo](https://github.com/RealDebian/Palpeo)
+
+Made in Nicaragua
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
