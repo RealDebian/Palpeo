@@ -64,37 +64,21 @@ This section should list any major frameworks that you built your project using.
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/RealDebian/Palpeo.git
+   $ git clone https://github.com/RealDebian/Palpeo.git
    ```
 2. Run Palpeo 
    ```sh
-   npm install
+   $ python3 start_palpeo.py
    ```
 4. Enter your API in `config.js`
    ```JS
-   const API_KEY = 'ENTER YOUR API';
+   $ Target Site: https://example.com
    ```
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 
 
@@ -134,7 +118,6 @@ Project Link: [https://github.com/RealDebian/Palpeo](https://github.com/RealDebi
 
 
 
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
@@ -148,5 +131,5 @@ Project Link: [https://github.com/RealDebian/Palpeo](https://github.com/RealDebi
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/oscarperezmora
+[linkedin-url]: https://linkedin.com/in/othneildrew
 [product-screenshot]: images/screenshot.png
