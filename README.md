@@ -1,8 +1,3 @@
-
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -25,6 +20,8 @@
     <a href="https://github.com/RealDebian/Palpeo/issues">Request Feature</a>
   </p>
 </p>
+
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
