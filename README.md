@@ -1,5 +1,7 @@
 <p align="center">
-  [![LinkedIn][linkedin-shield]][linkedin-url]
+  <htlm>
+[![LinkedIn][linkedin-shield]][linkedin-url]
+</html>
 </p>
 
 
