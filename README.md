@@ -1,8 +1,3 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
 
@@ -30,9 +25,6 @@
   </p>
 </p>
 
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -40,13 +32,11 @@
 
 Palpeo is a website scraper that aims to extract all the links from the source code of a page, analyze them and display them according to their nature, malicious or benign,Palpeo is written in Python3, using regular expressions to find all links on a web page.
 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
-
 
 ### Installation
 
@@ -63,14 +53,10 @@ To get a local copy up and running follow these simple example steps.
    $ Target Site: https://example.com
    ```
 
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/RealDebian/Palpeo/issues) for a list of proposed features (and known issues).
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -83,14 +69,10 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -98,8 +80,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Oscar Perez - [@RealDebian](https://twitter.com/RealDebian) - oscar_perez@windowslive.com
 
 Project Link: [https://github.com/RealDebian/Palpeo](https://github.com/RealDebian/Palpeo)
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
