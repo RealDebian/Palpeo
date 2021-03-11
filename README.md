@@ -49,14 +49,6 @@ Of course, no one template will serve all projects since your needs may be diffe
 
 A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
-### Built With
-
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
-
-
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -75,8 +67,8 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    $ python3 start_palpeo.py
    ```
-4. Enter your API in `config.js`
-   ```JS
+3. Select a Target 
+   ```sh
    $ Target Site: https://example.com
    ```
 
