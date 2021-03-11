@@ -38,7 +38,7 @@
 
 <p align="center">
   <a href="https://github.com/RealDebian/Palpeo">
-    <img src="logo.png" alt="Logo" width="80" height="80">
+    <img src="Palpeo_Start.png" alt="Logo" width="80" height="80">
   </a>
 </p>
 
