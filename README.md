@@ -1,12 +1,12 @@
 # Palpeo
 Website Link Extractor
 
-Palpeo es un extractor de dominios dentro del código fuente de una página web, escrito en Python3.
+Palpeo is a domain extractor within the source code of a web page, written in Python3.
 
-Su funcionalidad es aplicar expresiones regulares para extraer dominios y clasificarlos por su tipo.
+Its functionality is to apply regular expressions to extract domains and classify them by their type.
 
-Está en su versión BETA 0.2, será una implementación del proyecto bemburn.
+It is in its BETA 0.2 version, it will be an implementation of the bemburn project.
 
-INICIO PALPEO
+START PALPE
 
 $ python3 palpeo.py
