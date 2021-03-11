@@ -10,11 +10,9 @@
   <p align="center">
     An awesome website source code link extractor!
     <br />
-    <a href="https://github.com/RealDebian/Palpeo"><strong>Explore the docs »</strong></a>
+    <a href="https://ncaintelligence.blogspot.com/2021/02/black-hat-seo-en-sitios-webs.html"><strong>Palpeo in Action»</strong></a>
     <br />
     <br />
-    <a href="https://github.com/RealDebian/Palpeo">View Demo</a>
-    ·
     <a href="https://github.com/RealDebian/Palpeo/issues">Report Bug</a>
     ·
     <a href="https://github.com/RealDebian/Palpeo/issues">Request Feature</a>
