@@ -1,8 +1,6 @@
-<p align="center">
-  <htlm>
+
 [![LinkedIn][linkedin-shield]][linkedin-url]
-</html>
-</p>
+
 
 
 <!-- PROJECT LOGO -->
